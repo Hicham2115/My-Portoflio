@@ -84,9 +84,9 @@ export function About() {
             className="text-[var(--fg2)] text-[18px] leading-[1.6] mt-6 max-w-[520px]"
           >
             I&apos;m Hicham — a full-stack developer working across React,
-            Next.js, TypeScript and Laravel/PHP, with an eye for the brand
-            and design side of the product too. I build things meant to
-            load fast, rank well, and hold up under real use.
+            Next.js, TypeScript, Laravel/PHP and Express.js, with an eye
+            for the brand and design side of the product too. I build
+            things meant to load fast, rank well, and hold up under real use.
           </p>
           <div ref={statsGrid} className="grid grid-cols-2 gap-x-6 gap-y-[30px] mt-[46px] max-w-[480px]">
             {STATS.map((s) => (

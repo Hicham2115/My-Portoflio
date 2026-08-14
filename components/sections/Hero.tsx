@@ -34,7 +34,7 @@ export function Hero({ animate }: { animate: boolean }) {
       {/* Top bar */}
       <div className="hero-top flex justify-between gap-5 text-[14px] text-[var(--fg2)] font-medium border-t border-[var(--line)] pt-[18px] mb-auto">
         <span className="max-w-[300px]">
-          Hicham Kamani — full-stack developer building fast, SEO-ready products with React, Next.js and Laravel.
+          Hicham Kamani — full-stack developer building fast, SEO-ready products with React, Next.js, Laravel and Express.js.
         </span>
         <span>Full-Stack Developer</span>
       </div>
@@ -58,7 +58,7 @@ export function Hero({ animate }: { animate: boolean }) {
       {/* Bottom bar */}
       <div className="flex justify-between items-end gap-[30px] border-t border-[var(--line)] pt-[22px] flex-wrap">
         <p className="hero-bottom-item max-w-[430px] text-[17px] leading-[1.5] text-[var(--fg2)]">
-          I pair clean full-stack engineering with brand-grade design — from Laravel APIs to Next.js front ends, built to be fast and found.
+          I pair clean full-stack engineering with brand-grade design — from Laravel and Express.js APIs to Next.js front ends, built to be fast and found.
         </p>
         <div className="hero-bottom-item flex items-center gap-[10px] text-[12px] uppercase tracking-[0.18em] text-[var(--fg3)] font-semibold">
           <span className="w-[34px] h-[34px] border border-[var(--line)] rounded-full flex items-center justify-center">

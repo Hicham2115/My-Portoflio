@@ -4,9 +4,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "@tanstack/react-form";
+import { z } from "zod";
 import { ArrowUpRight, Send } from "lucide-react";
+import { toast } from "sonner";
 import { api } from "@/lib/axios";
-import axios from "axios";
+import { getErrorMessage } from "@/lib/errors";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,20 +18,21 @@ const SOCIALS = [
   { name: "LinkedIn", href: "#" },
 ];
 
-async function subscribeEmail(email: string): Promise<void> {
-  try {
-    await api.post("/newsletter", { email });
-  } catch (err) {
-    if (axios.isAxiosError(err) && err.response) {
-      throw new Error(err.response.data?.message ?? "Subscription failed.");
-    }
-  }
+const contactSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Enter a valid email"),
+  message: z.string().min(1, "Message is required"),
+});
+
+type ContactPayload = z.infer<typeof contactSchema>;
+
+async function sendContactMessage(payload: ContactPayload): Promise<void> {
+  await api.post("/api/contact", payload);
 }
 
 export function Footer() {
   const root = useRef<HTMLElement>(null);
   const mailRef = useRef<HTMLAnchorElement>(null);
-  const [email, setEmail] = useState("");
   const [year, setYear] = useState(2026);
   const [time, setTime] = useState("—");
 
@@ -94,15 +98,32 @@ export function Footer() {
     { scope: root },
   );
 
-  const newsletter = useMutation({
-    mutationFn: subscribeEmail,
-    onSuccess: () => setEmail(""),
+  const contact = useMutation({
+    mutationFn: sendContactMessage,
+    onSuccess: () => {
+      toast.success("Message sent — I'll get back to you soon.");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error));
+    },
   });
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) newsletter.mutate(email);
-  };
+  const form = useForm({
+    defaultValues: { name: "", email: "", message: "" },
+    onSubmit: async ({ value }) => {
+      const parsed = contactSchema.safeParse(value);
+      if (!parsed.success) {
+        toast.error(parsed.error.issues[0].message);
+        return;
+      }
+      try {
+        await contact.mutateAsync(parsed.data);
+        form.reset();
+      } catch {
+        // surfaced via the mutation's onError toast above
+      }
+    },
+  });
 
   return (
     <footer
@@ -143,40 +164,60 @@ export function Footer() {
           <ArrowUpRight size={22} aria-hidden="true" />
         </a>
 
-        {/* Newsletter */}
+        {/* Contact form */}
         <form
-          onSubmit={handleSubscribe}
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
           data-fade
-          className="flex justify-center mt-10 max-w-[380px] mx-auto"
+          className="mt-10 max-w-[440px] mx-auto text-left"
         >
-          <input
-            type="email"
-            placeholder="Stay updated — your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="flex-1 px-[18px] py-3 bg-white/[0.08] border border-[var(--line)] border-r-0 rounded-l-[10px] text-white font-[family-name:var(--font-body)] text-[14px] outline-none"
-          />
+          <div className="grid grid-cols-2 gap-3 max-[480px]:grid-cols-1">
+            <form.Field name="name">
+              {(field) => (
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  className="w-full px-[18px] py-3 bg-white/[0.08] border border-[var(--line)] rounded-[10px] text-white font-[family-name:var(--font-body)] text-[14px] outline-none focus:border-[var(--lime)]/50 transition-colors"
+                />
+              )}
+            </form.Field>
+            <form.Field name="email">
+              {(field) => (
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  className="w-full px-[18px] py-3 bg-white/[0.08] border border-[var(--line)] rounded-[10px] text-white font-[family-name:var(--font-body)] text-[14px] outline-none focus:border-[var(--lime)]/50 transition-colors"
+                />
+              )}
+            </form.Field>
+          </div>
+          <form.Field name="message">
+            {(field) => (
+              <textarea
+                placeholder="What's on your mind?"
+                value={field.state.value}
+                onChange={(e) => field.handleChange(e.target.value)}
+                rows={3}
+                className="w-full mt-3 px-[18px] py-3 bg-white/[0.08] border border-[var(--line)] rounded-[10px] text-white font-[family-name:var(--font-body)] text-[14px] outline-none resize-none focus:border-[var(--lime)]/50 transition-colors"
+              />
+            )}
+          </form.Field>
           <button
             type="submit"
-            disabled={newsletter.isPending}
-            className={`px-[18px] rounded-r-[10px] border-none flex items-center font-bold transition-colors duration-300 ${newsletter.isSuccess ? "bg-[var(--olive)]" : "bg-[var(--lime)]"} text-[var(--ink)] cursor-pointer`}
-            aria-label="Subscribe"
+            disabled={contact.isPending}
+            className={`w-full mt-3 px-[18px] py-3 rounded-[10px] border-none flex items-center justify-center gap-2 font-bold transition-colors duration-300 ${contact.isSuccess ? "bg-[var(--olive)]" : "bg-[var(--lime)]"} text-[var(--ink)] cursor-pointer disabled:opacity-60`}
           >
+            {contact.isPending ? "Sending…" : "Send message"}
             <Send size={16} aria-hidden="true" />
           </button>
         </form>
-        {newsletter.isSuccess && (
-          <p className="text-[13px] text-[var(--lime-soft)] mt-2">
-            You&apos;re subscribed!
-          </p>
-        )}
-        {newsletter.isError && (
-          <p className="text-[13px] text-red-500 mt-2">
-            {(newsletter.error as Error)?.message ?? "Something went wrong."}
-          </p>
-        )}
-
         {/* Foot */}
         <div className="flex justify-between items-center gap-[18px] flex-wrap mt-[90px] pt-[26px] border-t border-[var(--line)] text-[14px] text-[var(--fg3)] font-medium">
           <span>© {year} Hicham Kamani</span>

@@ -253,7 +253,7 @@ export const PRINCIPLES: Principle[] = [
   {
     n: "02",
     title: "Full-stack, end to end",
-    desc: "Comfortable from a Laravel API to a Next.js front end — same care applied to schema, endpoint and pixel.",
+    desc: "Comfortable from a Laravel or Express.js API to a Next.js front end — same care applied to schema, endpoint and pixel.",
   },
   {
     n: "03",
@@ -291,6 +291,7 @@ export const MARQUEE_ITEMS = [
   "Next.js",
   "TypeScript",
   "Laravel",
+  "Express.js",
   "Node.js",
   "My SQl",
   "MongoDB",

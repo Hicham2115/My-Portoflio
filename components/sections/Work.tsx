@@ -3,11 +3,13 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowUpRight, Lock } from "lucide-react";
+import { toast } from "sonner";
 import { PROJECTS, type Project, type ProjectCategory } from "@/lib/data";
 import { queryKeys } from "@/lib/queryKeys";
+import { getErrorMessage } from "@/lib/errors";
 import { WorkSkeleton } from "@/components/ui/Skeleton";
 import { ErrorState } from "@/components/ui/ErrorState";
 
@@ -18,7 +20,9 @@ const FILTERS: Filter[] = ["All", "Full Stack", "Shopify", "Website"];
 
 async function fetchProjects(filter: Filter): Promise<Project[]> {
   await new Promise((r) => setTimeout(r, 400));
-  return filter === "All" ? PROJECTS : PROJECTS.filter((p) => p.category === filter);
+  return filter === "All"
+    ? PROJECTS
+    : PROJECTS.filter((p) => p.category === filter);
 }
 
 export function Work() {
@@ -29,11 +33,16 @@ export function Work() {
     data: projects = [],
     isLoading,
     isError,
+    error,
     refetch,
   } = useQuery({
     queryKey: queryKeys.projects(activeFilter),
     queryFn: () => fetchProjects(activeFilter),
   });
+
+  useEffect(() => {
+    if (isError) toast.error(getErrorMessage(error));
+  }, [isError, error]);
 
   useGSAP(
     () => {
@@ -94,7 +103,10 @@ export function Work() {
       <div className="flex flex-wrap gap-3 mb-16" data-fade>
         {FILTERS.map((f) => {
           const isActive = activeFilter === f;
-          const count = f === "All" ? PROJECTS.length : PROJECTS.filter((p) => p.category === f).length;
+          const count =
+            f === "All"
+              ? PROJECTS.length
+              : PROJECTS.filter((p) => p.category === f).length;
           return (
             <button
               key={f}
@@ -108,7 +120,9 @@ export function Work() {
               ].join(" ")}
             >
               {f}
-              <span className={`ml-2 ${isActive ? "text-[var(--ink)]/70" : "text-[var(--fg3)]"}`}>
+              <span
+                className={`ml-2 ${isActive ? "text-[var(--ink)]/70" : "text-[var(--fg3)]"}`}
+              >
                 {count}
               </span>
             </button>
@@ -162,13 +176,12 @@ function WorkCard({
       <a
         href="#work"
         data-cursor="View"
-        className="group relative rounded-[18px] overflow-hidden aspect-[3/2] cursor-none block [direction:ltr]"
+        className="group relative rounded-[18px] overflow-hidden cursor-none block [direction:ltr]"
       >
         <Image
           src={project.cover}
           alt={project.name}
-          fill
-          className="object-cover object-top scale-[1.18] transition-transform duration-700 ease-out group-hover:scale-[1.26]"
+          className="block w-full h-auto transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           sizes="(max-width: 820px) 100vw, 50vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(14,16,19,0.75)] via-transparent to-transparent" />

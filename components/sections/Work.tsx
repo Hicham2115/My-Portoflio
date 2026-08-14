@@ -16,7 +16,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 gsap.registerPlugin(ScrollTrigger);
 
 type Filter = "All" | ProjectCategory;
-const FILTERS: Filter[] = ["All", "Full Stack", "Shopify", "Website"];
+const FILTERS: Filter[] = ["All", "Full Stack", "Shopify"];
 
 async function fetchProjects(filter: Filter): Promise<Project[]> {
   await new Promise((r) => setTimeout(r, 400));
@@ -168,13 +168,18 @@ function WorkCard({
   const isEven = index % 2 === 1;
   const n = String(index + 1).padStart(2, "0");
   const t = String(total).padStart(2, "0");
+  const href = project.url ?? "#work";
+  const externalProps = project.url
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
 
   return (
     <article
       className={`work-item grid grid-cols-2 gap-10 items-center max-[820px]:grid-cols-1 max-[820px]:gap-[22px] ${isEven ? "[direction:rtl]" : ""}`}
     >
       <a
-        href="#work"
+        href={href}
+        {...externalProps}
         data-cursor="View"
         className="group relative rounded-[18px] overflow-hidden cursor-none block [direction:ltr]"
       >
@@ -185,12 +190,12 @@ function WorkCard({
           sizes="(max-width: 820px) 100vw, 50vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(14,16,19,0.75)] via-transparent to-transparent" />
-        <span className="absolute left-[26px] bottom-5 z-[2] font-[family-name:var(--font-display)] font-semibold text-[20px] text-white">
+        {/* <span className="absolute left-[26px] bottom-5 z-[2] font-[family-name:var(--font-display)] font-semibold text-[20px] text-white">
           {project.name}
-        </span>
-        <span className="absolute top-[22px] left-6 font-[family-name:var(--font-display)] font-semibold text-[15px] text-white [mix-blend-mode:difference]">
+        </span> */}
+        {/* <span className="absolute top-[22px] left-6 font-[family-name:var(--font-display)] font-semibold text-[15px] text-white [mix-blend-mode:difference]">
           {n} / {t}
-        </span>
+        </span> */}
         {project.protected && (
           <span className="absolute top-[18px] right-5 z-[2] flex items-center gap-1.5 text-[12px] font-semibold text-white bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5">
             <Lock size={12} aria-hidden="true" />
@@ -235,14 +240,19 @@ function WorkCard({
             {project.statLabel}
           </span>
         </div>
-        <span className="inline-flex items-center gap-[10px] font-[family-name:var(--font-display)] font-semibold text-[15px] text-[var(--fg)]">
+        <a
+          href={href}
+          {...externalProps}
+          data-cursor="View"
+          className="inline-flex items-center gap-[10px] font-[family-name:var(--font-display)] font-semibold text-[15px] text-[var(--fg)] cursor-none"
+        >
           View project
           <ArrowUpRight
             size={18}
             aria-hidden="true"
             className="transition-transform duration-[400ms]"
           />
-        </span>
+        </a>
       </div>
     </article>
   );

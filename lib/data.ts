@@ -8,10 +8,8 @@ import maisonOriaCover from "@/app/assets/projects/maison-oria/cover.png";
 import chahrazadBabyCover from "@/app/assets/projects/chahrazad-baby/cover.png";
 import safaaCreationsCover from "@/app/assets/projects/safaa-creations/cover.png";
 import swiftwayCover from "@/app/assets/projects/swiftway/cover.png";
-import luxenCover from "@/app/assets/projects/luxen/cover.png";
-import artePiedraCover from "@/app/assets/projects/arte-piedra/cover.png";
 
-export type ProjectCategory = "Full Stack" | "Shopify" | "Website";
+export type ProjectCategory = "Full Stack" | "Shopify";
 
 export interface Project {
   slug: string;
@@ -24,6 +22,7 @@ export interface Project {
   protected?: boolean;
   tags: string[];
   cover: StaticImageData;
+  url?: string;
 }
 
 export interface Principle {
@@ -58,6 +57,7 @@ export const PROJECTS: Project[] = [
       "MySQL",
     ],
     cover: quicksyncCover,
+    url: "https://github.com/Hicham2115/QuickSync",
   },
   {
     slug: "salora",
@@ -78,10 +78,11 @@ export const PROJECTS: Project[] = [
       "MySQL",
     ],
     cover: saloraCover,
+    url: "https://github.com/Hicham2115/Salora",
   },
   {
     slug: "arini-lock",
-    name: "Arini Lock (SERRUX)",
+    name: "Arini Lock",
     subtitle: "Stallion Advertising · 2025",
     description:
       "A bilingual Shopify storefront for a smart door lock brand, with cash-on-delivery checkout and an AI shopping assistant.",
@@ -99,6 +100,7 @@ export const PROJECTS: Project[] = [
       "Groq",
     ],
     cover: ariniLockCover,
+    url: "https://github.com/Hicham2115/AriniLock",
   },
   {
     slug: "anissa-cosmetics",
@@ -121,6 +123,7 @@ export const PROJECTS: Project[] = [
       "Zod",
     ],
     cover: anissaCosmeticsCover,
+    url: "https://github.com/Hicham2115/Anissa-Cosmetique",
   },
   {
     slug: "maison",
@@ -143,6 +146,7 @@ export const PROJECTS: Project[] = [
       "shadcn/ui",
     ],
     cover: maisonCover,
+    url: "https://github.com/Hicham2115/E-commerce-Furniture",
   },
   {
     slug: "maison-oria",
@@ -164,6 +168,7 @@ export const PROJECTS: Project[] = [
       "GSAP/Framer Motion",
     ],
     cover: maisonOriaCover,
+    url: "https://github.com/Hicham2115/E-com-bags",
   },
   {
     slug: "chahrazad-baby",
@@ -184,6 +189,7 @@ export const PROJECTS: Project[] = [
       "Shopify Storefront API",
     ],
     cover: chahrazadBabyCover,
+    url: "https://github.com/Hicham2115/E-commerce-Baby",
   },
   {
     slug: "safaa-creations",
@@ -193,9 +199,10 @@ export const PROJECTS: Project[] = [
       "A Moroccan fashion storefront with luxury and wedding collections, GSAP animations, and smooth Lenis scrolling.",
     statValue: "2",
     statLabel: "Collections: luxury + wedding",
-    category: "Full Stack",
+    category: "Shopify",
     tags: ["Next.js", "GSAP", "Lenis"],
     cover: safaaCreationsCover,
+    url: "https://github.com/Hicham2115/Saffa-Creations",
   },
   {
     slug: "swiftway",
@@ -208,39 +215,7 @@ export const PROJECTS: Project[] = [
     category: "Full Stack",
     tags: ["Next.js", "React", "Express"],
     cover: swiftwayCover,
-  },
-  {
-    slug: "luxen",
-    name: "Luxen",
-    subtitle: "Plumbing & Heating Services Site",
-    description:
-      "A marketing site for a plumbing and heating company, with service listings, pricing, testimonials, and a validated contact form.",
-    statValue: "5",
-    statLabel: "Sections: services, pricing, testimonials, FAQ, contact",
-    category: "Website",
-    tags: ["Next.js", "TypeScript", "Tailwind CSS"],
-    cover: luxenCover,
-  },
-  {
-    slug: "arte-piedra",
-    name: "Arte Piedra",
-    subtitle: "Moroccan Marble & Zellige Studio Website",
-    description:
-      "A bilingual marketing site for an artisan Moroccan marble and zellige studio, with scroll-triggered animations and a warm, tactile design.",
-    statValue: "2",
-    statLabel: "Languages: French & English",
-    category: "Website",
-    tags: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS v4",
-      "Framer Motion",
-      "base-ui",
-      "Zod",
-      "TanStack Form",
-    ],
-    cover: artePiedraCover,
+    url: "https://github.com/Hicham2115/Delivery",
   },
 ];
 
@@ -273,7 +248,11 @@ export const SKILLS: Skill[] = [
     title: "Frontend",
     desc: "React, Next.js, TypeScript, Tailwind, shadcn/ui",
   },
-  { n: "02", title: "Backend", desc: "Laravel, PHP, Node.js, Express.js, Python" },
+  {
+    n: "02",
+    title: "Backend",
+    desc: "Laravel, PHP, Node.js, Express.js, Python",
+  },
   {
     n: "03",
     title: "Data & Commerce",

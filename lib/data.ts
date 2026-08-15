@@ -100,7 +100,7 @@ export const PROJECTS: Project[] = [
       "Groq",
     ],
     cover: ariniLockCover,
-    url: "https://github.com/Hicham2115/AriniLock",
+    url: "https://www.arinilock.ma/",
   },
   {
     slug: "anissa-cosmetics",
@@ -123,7 +123,7 @@ export const PROJECTS: Project[] = [
       "Zod",
     ],
     cover: anissaCosmeticsCover,
-    url: "https://github.com/Hicham2115/Anissa-Cosmetique",
+    url: "https://www.anissacosmetics.com/",
   },
   {
     slug: "maison",
@@ -146,7 +146,7 @@ export const PROJECTS: Project[] = [
       "shadcn/ui",
     ],
     cover: maisonCover,
-    url: "https://github.com/Hicham2115/E-commerce-Furniture",
+    url: "https://e-commerce-furniture-gilt.vercel.app/",
   },
   {
     slug: "maison-oria",
@@ -168,7 +168,7 @@ export const PROJECTS: Project[] = [
       "GSAP/Framer Motion",
     ],
     cover: maisonOriaCover,
-    url: "https://github.com/Hicham2115/E-com-bags",
+    url: "https://e-com-bags.vercel.app/",
   },
   {
     slug: "chahrazad-baby",
@@ -189,7 +189,7 @@ export const PROJECTS: Project[] = [
       "Shopify Storefront API",
     ],
     cover: chahrazadBabyCover,
-    url: "https://github.com/Hicham2115/E-commerce-Baby",
+    url: "https://e-commerce-baby.vercel.app/",
   },
   {
     slug: "safaa-creations",
@@ -202,7 +202,7 @@ export const PROJECTS: Project[] = [
     category: "Shopify",
     tags: ["Next.js", "GSAP", "Lenis"],
     cover: safaaCreationsCover,
-    url: "https://github.com/Hicham2115/Saffa-Creations",
+    url: "https://saffa-creations.vercel.app/",
   },
   {
     slug: "swiftway",
